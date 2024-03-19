@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Mapper">
+ 
+ <select id="selectAll" resultType="PostDTO">
+ 	select * from postDB order by postid asc
+ </select>
+ 
+ <select id="selectOneByPostId" parameterType="long" resultType="PostDTO">
+	select * from postDB where postid = #{postId}
+ </select>
+ 
+ <select id="selectOnePostIdFromDual" resultType="long">
+		SELECT POSTIDSEQ.NEXTVAL AS postId FROM DUAL
+</select>
+
+<insert id="insertPost" parameterType="PostDTO">
+	
+	INSERT INTO postDB (postid, postBoard, userid, contid, postTitle,
+	postDate, postEditDate, postText, nickname, categoryId)
+	VALUES (#{postId}, #{postBoard}, #{userId}, #{contId, jdbcType=NUMERIC},
+	#{postTitle}, SYSTIMESTAMP, null, #{postText}, #{nickname},
+	null)
+	
+</insert>
+
+
+<delete id="deletePostByPostId" parameterType="long">
+	delete from postDB where postid = #{postId}
+</delete>
+<delete id="deletePostInfo" parameterType="long">
+	    DELETE FROM postinfodb WHERE postid = #{postId}
+</delete>
+	
+
+<update id="updatePost" parameterType="PostDTO">
+	update postDB 
+	set postTitle=#{postTitle}, postText=#{postText}, postEditDate=SYSTIMESTAMP
+	where postid=#{postId}
+</update>	
+	
+	
+</mapper>
